@@ -32,10 +32,10 @@ const PlannerModal = ({ isOpen, setModalIsOpen, request, meal }) => {
       setModalIsOpen(false);
    };
 
-   const addMeal = () => {
+   const addMeal = (e) => {
       const data = {
          name: e.target.name.value,
-         ingredients: e.target.ingredients.value.split("\n"),
+         ingredients: e.target.ingredients.value.split(/(?:,|\\n| )+/),
          day: e.target.day.value,
       };
 
@@ -68,8 +68,7 @@ const PlannerModal = ({ isOpen, setModalIsOpen, request, meal }) => {
       e.preventDefault();
 
       if (request === "add") {
-         //addMeal();
-         console.log(currentMeal);
+         addMeal(e);
       }
       if (request === "edit") {
          editMeal();

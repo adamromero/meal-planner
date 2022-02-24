@@ -1,18 +1,45 @@
 import React from "react";
 import PlannerDay from "./PlannerDay";
 
+const getSortedWeek = (week) => {
+   const today = new Date().getDay();
+   const sortedWeek = [
+      ...week.slice(today, week.length),
+      ...week.slice(0, today),
+   ];
+   return sortedWeek;
+};
+
 const Planner = ({ items }) => {
+   const week = getSortedWeek([
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+   ]);
+
    return (
       <>
-         <PlannerDay day="Sunday" meals={items} />
-         <PlannerDay day="Monday" meals={items} />
-         <PlannerDay day="Tuesday" meals={items} />
-         <PlannerDay day="Wednesday" meals={items} />
-         <PlannerDay day="Thursday" meals={items} />
-         <PlannerDay day="Friday" meals={items} />
-         <PlannerDay day="Saturday" meals={items} />
+         {week.map((day, index) => (
+            <PlannerDay key={index} day={day} meals={items} />
+         ))}
       </>
    );
 };
 
 export default Planner;
+
+/*
+
+const week = ["Sunday", "Monday", "Tuesday"]
+
+week.map((day) => (
+   <PlannerDay day={day} meals={items} />
+))
+
+
+
+*/
