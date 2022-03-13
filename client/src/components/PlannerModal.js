@@ -73,6 +73,8 @@ const PlannerModal = ({ isOpen, setModalIsOpen, request, meal }) => {
       if (request === "edit") {
          editMeal();
       }
+
+      closeModal();
    };
 
    const handleChange = (e) => {
@@ -91,17 +93,21 @@ const PlannerModal = ({ isOpen, setModalIsOpen, request, meal }) => {
                name="name"
                type="text"
                placeholder="Meal"
-               value={currentMeal.name}
+               value={currentMeal.name || ""}
                onChange={handleChange}
             />
             <textarea
                name="ingredients"
                rows="15"
                cols="50"
-               value={currentMeal.ingredients}
+               value={currentMeal.ingredients || ""}
                onChange={handleChange}
             ></textarea>
-            <select name="day" value={currentMeal.day} onChange={handleChange}>
+            <select
+               name="day"
+               value={currentMeal.day || ""}
+               onChange={handleChange}
+            >
                <option>Sunday</option>
                <option>Monday</option>
                <option>Tuesday</option>

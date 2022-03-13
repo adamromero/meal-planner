@@ -25,7 +25,9 @@ const PlannerDay = ({ day, meals }) => {
             <h2>{day}</h2>
             <ul>
                {meals
-                  .filter((meal) => meal.day === day)
+                  .filter(
+                     (meal) => meal.day.toLowerCase() === day.toLowerCase()
+                  )
                   .map((meal) => (
                      <li key={meal._id}>
                         <span>{meal.name}</span>

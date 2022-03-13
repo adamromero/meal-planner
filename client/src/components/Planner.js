@@ -31,15 +31,3 @@ const Planner = ({ items }) => {
 };
 
 export default Planner;
-
-/*
-
-const week = ["Sunday", "Monday", "Tuesday"]
-
-week.map((day) => (
-   <PlannerDay day={day} meals={items} />
-))
-
-
-
-*/
