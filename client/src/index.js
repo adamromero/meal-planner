@@ -10,14 +10,32 @@ import PrimaryButton, {
 } from "./components/styled-components/Buttons";
 
 const App = () => {
-   const [items, setItems] = useState([]);
+   const [meals, setMeals] = useState([]);
+   const [ingredients, setIngredients] = useState([]);
    const [modalIsOpen, setModalIsOpen] = useState(false);
 
    useEffect(() => {
       fetch("http://localhost:5000/api/meals")
          .then((res) => res.json())
-         .then((data) => setItems(data));
+         .then((data) => {
+            setMeals(data);
+            combineIngredientsIntoList(data);
+         });
    }, []);
+
+   const combineIngredientsIntoList = (data) => {
+      const ingredientsArray = Array.from(
+         new Set(
+            data
+               .map((item) => item.ingredients)
+               .flat()
+               .map((i) => i.toLowerCase().split("\n"))
+               .flat()
+         )
+      );
+
+      setIngredients(ingredientsArray);
+   };
 
    const handleAddMeal = () => {
       setModalIsOpen(true);
@@ -26,11 +44,18 @@ const App = () => {
    return (
       <div>
          <h1>Meal Planner</h1>
-         <PrimaryButton onClick={handleAddMeal}>Add Meal</PrimaryButton>
-         <SecondaryButton>Saved Meal</SecondaryButton>
-         <h2>Today Is:</h2>
-         <Planner items={items} />
-         <ShoppingList items={items} />
+         <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div>
+               <PrimaryButton onClick={handleAddMeal}>Add Meal</PrimaryButton>
+               <SecondaryButton>Saved Meal</SecondaryButton>
+               <h2>Today Is:</h2>
+               <Planner meals={meals} />
+            </div>
+            <div>
+               <ShoppingList ingredients={ingredients} />
+            </div>
+         </div>
+
          <PlannerModal
             isOpen={modalIsOpen}
             setModalIsOpen={setModalIsOpen}

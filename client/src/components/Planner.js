@@ -10,7 +10,7 @@ const getSortedWeek = (week) => {
    return sortedWeek;
 };
 
-const Planner = ({ items }) => {
+const Planner = ({ meals }) => {
    const week = getSortedWeek([
       "Sunday",
       "Monday",
@@ -24,7 +24,7 @@ const Planner = ({ items }) => {
    return (
       <>
          {week.map((day, index) => (
-            <PlannerDay key={index} day={day} meals={items} />
+            <PlannerDay key={index} day={day} meals={meals} />
          ))}
       </>
    );

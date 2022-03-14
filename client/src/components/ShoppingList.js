@@ -1,32 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-const ShoppingList = ({ items }) => {
-   const ingredients = items
-      .map((item) => item.ingredients)
-      .flat()
-      .map((i) => i.split("\n"))
-      .flat();
+const ShoppingList = ({ ingredients }) => {
    const [shoppingList, setShoppingList] = useState([]);
    const [inputItem, setInputItem] = useState("");
 
-   console.log(ingredients);
-
    useEffect(() => {
       setShoppingList(ingredients);
-   }, []);
+   }, [ingredients]);
 
-   const selectIngredient = (item) => {
-      if (item !== "default") {
+   const addToShoppingList = (item) => {
+      if (
+         !shoppingList.filter(
+            (listItem) => listItem.toLowerCase() === item.toLowerCase()
+         ).length > 0
+      ) {
          setShoppingList([...shoppingList, item]);
       }
    };
 
-   const addItem = () => {
-      setShoppingList([...shoppingList, inputItem]);
-   };
-
-   const removeItem = (item) => {
-      console.log(item);
+   const removeFromShoppingList = (item) => {
       setShoppingList(
          shoppingList.filter(
             (listItem) => listItem.toLowerCase() !== item.toLowerCase()
@@ -40,7 +32,12 @@ const ShoppingList = ({ items }) => {
          <select
             defaultValue="default"
             name="ingredients"
-            onChange={(e) => selectIngredient(e.target.value)}
+            onChange={(e) => {
+               const item = e.target.value;
+               if (item !== "default") {
+                  addToShoppingList(item);
+               }
+            }}
          >
             <option value="default">Select an item</option>
             {ingredients.map((ingredient, index) => (
@@ -52,17 +49,24 @@ const ShoppingList = ({ items }) => {
          <input
             type="text"
             placeholder="Add item"
+            value={inputItem}
             onChange={(e) => setInputItem(e.target.value)}
          />
-         <button onClick={() => addItem()}>Submit</button>
+         <button
+            onClick={() => {
+               addToShoppingList(inputItem);
+               setInputItem("");
+            }}
+         >
+            Submit
+         </button>
          <ul>
             {shoppingList.map((item, index) => (
                <li
                   key={index}
                   value={item}
                   onClick={(e) => {
-                     console.log(e);
-                     removeItem(e.target.innerHTML);
+                     removeFromShoppingList(e.target.innerHTML);
                   }}
                >
                   {item}
