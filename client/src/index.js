@@ -48,6 +48,12 @@ const App = () => {
       <>
          <style type="text/css">
             {`
+               header {
+                  background: black;
+                  color: white;
+                  padding: 25px 0;
+                  margin: 0 0 25px;
+               }
                .btn-primary {
                   background-color: #1c5b78;
                   border-color: #1c5b78;
@@ -61,10 +67,10 @@ const App = () => {
                }
             `}
          </style>
+         <header>
+            <h1 className="text-center">Meal Planner</h1>
+         </header>
          <Container fluid="md">
-            <header>
-               <h1 className="text-center">Meal Planner</h1>
-            </header>
             <Row>
                <Col md={7} lg={6}>
                   <Row className="mb-3">

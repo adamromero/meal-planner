@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
+import ListGroup from "react-bootstrap/ListGroup";
+import { Trash } from "react-bootstrap-icons";
 
 const ShoppingList = ({ ingredients }) => {
    const [shoppingList, setShoppingList] = useState([]);
@@ -31,8 +33,8 @@ const ShoppingList = ({ ingredients }) => {
 
    return (
       <>
-         <h2>Shopping List</h2>
          <Form.Group>
+            <h2>Shopping List</h2>
             <Form.Select
                defaultValue="default"
                name="ingredients"
@@ -66,20 +68,31 @@ const ShoppingList = ({ ingredients }) => {
                   Submit
                </Button>
             </InputGroup>
+            <ListGroup>
+               {shoppingList.map((item, index) => (
+                  <ListGroup.Item
+                     key={index}
+                     value={item}
+                     className="d-flex justify-content-between"
+                  >
+                     {item}
+                     <button
+                        style={{
+                           backgroundColor: "transparent",
+                           border: "none",
+                        }}
+                     >
+                        <Trash
+                           className="text-danger"
+                           onClick={(e) => {
+                              removeFromShoppingList(item);
+                           }}
+                        />
+                     </button>
+                  </ListGroup.Item>
+               ))}
+            </ListGroup>
          </Form.Group>
-         <ul>
-            {shoppingList.map((item, index) => (
-               <li
-                  key={index}
-                  value={item}
-                  onClick={(e) => {
-                     removeFromShoppingList(e.target.innerHTML);
-                  }}
-               >
-                  {item}
-               </li>
-            ))}
-         </ul>
       </>
    );
 };
