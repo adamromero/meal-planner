@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PlannerDay from "./PlannerDay";
 
 const getSortedWeek = (week) => {
@@ -10,7 +10,13 @@ const getSortedWeek = (week) => {
    return sortedWeek;
 };
 
-const Planner = ({ meals }) => {
+const Planner = ({ meals, isUpdated, setIsUpdated }) => {
+   const [mealsList, setMealsList] = useState([]);
+
+   useEffect(() => {
+      setMealsList(meals);
+   }, [meals]);
+
    const week = getSortedWeek([
       "Sunday",
       "Monday",
@@ -24,7 +30,14 @@ const Planner = ({ meals }) => {
    return (
       <>
          {week.map((day, index) => (
-            <PlannerDay key={index} day={day} meals={meals} />
+            <PlannerDay
+               key={index}
+               day={day}
+               mealsList={mealsList}
+               setMealsList={setMealsList}
+               isUpdated={isUpdated}
+               setIsUpdated={setIsUpdated}
+            />
          ))}
       </>
    );

@@ -1,0 +1,32 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+   html,
+   body {
+      font-family: "Roboto", sans-serif;
+   }
+
+   h1 {
+      @apply text-2xl;
+      @apply font-bold;
+   }
+   h2 {
+      @apply text-xl;
+      @apply font-bold;
+   }
+}
+
+.content {
+   @apply text-xl;
+}
+
+.btn {
+   @apply font-bold py-2 px-6 rounded;
+}
+
+.btn-primary {
+   @apply text-white;
+   background-color: #1c5b78;
+}

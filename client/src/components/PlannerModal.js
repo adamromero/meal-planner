@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from "react";
-import Modal from "react-modal";
-
-const customStyles = {
-   content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      height: "50vh",
-      maxWidth: "500px",
-      width: "100%",
-   },
-};
-
-Modal.setAppElement("#root");
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 const API_URL = "http://localhost:5000/api/meals/";
 
-const PlannerModal = ({ isOpen, setModalIsOpen, request, meal }) => {
+const PlannerModal = ({
+   show,
+   onHide,
+   isNewMeal,
+   meal,
+   mealsList,
+   setMealsList,
+   isUpdated,
+   setIsUpdated,
+}) => {
    const [currentMeal, setCurrentMeal] = useState([]);
 
    useEffect(() => {
@@ -28,53 +23,55 @@ const PlannerModal = ({ isOpen, setModalIsOpen, request, meal }) => {
       }
    }, [meal]);
 
-   const closeModal = () => {
-      setModalIsOpen(false);
-   };
-
-   const addMeal = (e) => {
-      const data = {
+   const addMeal = async (e) => {
+      const newMeal = {
+         _id: "",
          name: e.target.name.value,
          ingredients: e.target.ingredients.value.split(/(?:,|\\n| )+/),
          day: e.target.day.value,
       };
 
-      fetch(API_URL, {
+      console.log(newMeal);
+
+      setMealsList([...mealsList, newMeal]);
+
+      await fetch(API_URL, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
          },
-         body: JSON.stringify(data),
+         body: JSON.stringify(newMeal),
       })
          .then((res) => res.json())
          .catch((err) => console.error(err));
+
+      setIsUpdated(!isUpdated);
    };
 
-   const editMeal = () => {
-      fetch(API_URL + currentMeal._id, {
+   const editMeal = async () => {
+      await fetch(API_URL + currentMeal._id, {
          method: "PUT",
          headers: {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
          },
          body: JSON.stringify(currentMeal),
       })
          .then((res) => res.json())
          .catch((err) => console.error(err));
+
+      setIsUpdated(!isUpdated);
    };
 
    const handleSubmit = (e) => {
       e.preventDefault();
 
-      if (request === "add") {
+      if (isNewMeal) {
          addMeal(e);
-      }
-      if (request === "edit") {
+      } else {
          editMeal();
       }
 
-      closeModal();
+      onHide();
    };
 
    const handleChange = (e) => {
@@ -87,37 +84,47 @@ const PlannerModal = ({ isOpen, setModalIsOpen, request, meal }) => {
    };
 
    return (
-      <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
-         <form onSubmit={handleSubmit}>
-            <input
-               name="name"
-               type="text"
-               placeholder="Meal"
-               value={currentMeal.name || ""}
-               onChange={handleChange}
-            />
-            <textarea
-               name="ingredients"
-               rows="15"
-               cols="50"
-               value={currentMeal.ingredients || ""}
-               onChange={handleChange}
-            ></textarea>
-            <select
-               name="day"
-               value={currentMeal.day || ""}
-               onChange={handleChange}
-            >
-               <option>Sunday</option>
-               <option>Monday</option>
-               <option>Tuesday</option>
-               <option>Wednesday</option>
-               <option>Thursday</option>
-               <option>Friday</option>
-               <option>Saturday</option>
-            </select>
-            <button type="submit">Submit</button>
-         </form>
+      <Modal show={show} onHide={onHide}>
+         <Modal.Header closeButton>
+            <Modal.Title>{isNewMeal ? "Add Meal" : "Edit Meal"}</Modal.Title>
+         </Modal.Header>
+         <Modal.Body>
+            <Form onSubmit={handleSubmit}>
+               <Form.Control
+                  name="name"
+                  type="text"
+                  placeholder="Meal"
+                  value={currentMeal.name || ""}
+                  onChange={handleChange}
+               />
+               <Form.Group className="mb-3">
+                  <Form.Control
+                     as="textarea"
+                     rows={8}
+                     name="ingredients"
+                     type="text"
+                     placeholder="Ingredients"
+                     value={currentMeal.ingredients || ""}
+                     onChange={handleChange}
+                  />
+               </Form.Group>
+               <Form.Select
+                  className="mb-3"
+                  name="day"
+                  value={currentMeal.day || ""}
+                  onChange={handleChange}
+               >
+                  <option>Sunday</option>
+                  <option>Monday</option>
+                  <option>Tuesday</option>
+                  <option>Wednesday</option>
+                  <option>Thursday</option>
+                  <option>Friday</option>
+                  <option>Saturday</option>
+               </Form.Select>
+               <Button type="submit">Submit</Button>
+            </Form>
+         </Modal.Body>
       </Modal>
    );
 };
