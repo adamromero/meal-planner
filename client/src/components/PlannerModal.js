@@ -25,11 +25,9 @@ const PlannerModal = ({
       const newMeal = {
          _id: "",
          name: e.target.name.value,
-         ingredients: e.target.ingredients.value.split(/(?:,|\\n| )+/),
+         ingredients: e.target.ingredients.value.split(/(?:,|\n| )+/),
          day: e.target.day.value,
       };
-
-      console.log(newMeal);
 
       setMealsList([...mealsList, newMeal]);
 

@@ -33,6 +33,10 @@ const PlannerDay = ({
       });
    };
 
+   const formatIngredient = (ingredient) => {
+      return `${ingredient.replaceAll(",", ", ").replaceAll("\n", ", ")}`;
+   };
+
    return (
       <>
          <Row className="day">
@@ -69,11 +73,8 @@ const PlannerDay = ({
                               <Col>
                                  <h5>{meal.name}</h5>
                                  <em>
-                                    {meal.ingredients.map(
-                                       (i) =>
-                                          `${i
-                                             .replaceAll(",", "")
-                                             .replaceAll("\n", ", ")}, `
+                                    {meal.ingredients.map((ingredient) =>
+                                       formatIngredient(ingredient)
                                     )}
                                  </em>
                               </Col>
@@ -86,10 +87,7 @@ const PlannerDay = ({
                                        border: "none",
                                     }}
                                  >
-                                    <Pencil
-                                       className="text-dark
-"
-                                    />
+                                    <Pencil className="text-dark" />
                                  </button>
 
                                  <button
@@ -100,10 +98,7 @@ const PlannerDay = ({
                                        border: "none",
                                     }}
                                  >
-                                    <Trash
-                                       className="text-danger
-"
-                                    />
+                                    <Trash className="text-danger" />
                                  </button>
                               </Col>
                            </Row>

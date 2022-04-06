@@ -29,17 +29,23 @@ const App = () => {
    }, [isUpdated]);
 
    const combineIngredientsIntoList = (data) => {
-      const ingredientsArray = Array.from(
+      let ingredientsArray = Array.from(
          new Set(
             data
                .map((item) => item.ingredients)
                .flat()
-               .map((i) => i.toLowerCase().split("\n"))
+               .map((item) => item.toLowerCase().split(/(?:,|\n)+/))
                .flat()
          )
+      ).map((item) => item.trim());
+
+      const ingredientsArrayNoDuplicates = ingredientsArray.filter(
+         (item, index) => {
+            return ingredientsArray.indexOf(item) === index;
+         }
       );
 
-      setIngredients(ingredientsArray);
+      setIngredients(ingredientsArrayNoDuplicates);
    };
 
    return (
