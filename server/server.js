@@ -4,7 +4,6 @@ const cors = require("cors");
 const app = express();
 const connectDB = require("./config/db");
 const path = require("path");
-const port = process.env.port || 5000;
 
 connectDB();
 app.use(cors());
@@ -25,6 +24,7 @@ if (process.env.NODE_ENV === "production") {
    );
 }
 
-app.listen(port, () => {
-   console.log(`Listening on port ${port}`);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+   console.log(`Listening on port ${PORT}`);
 });
