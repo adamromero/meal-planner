@@ -6,8 +6,6 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Spinner from "react-bootstrap/Spinner";
 import { Pencil, Trash } from "react-bootstrap-icons";
 
-const API_URL = "http://localhost:5000/api/meals/";
-
 const PlannerDay = ({
    day,
    mealsList,
@@ -29,7 +27,7 @@ const PlannerDay = ({
    };
 
    const handleDelete = (id) => {
-      fetch(API_URL + id, { method: "DELETE" }).then(() => {
+      fetch(`/api/meals/${id}`, { method: "DELETE" }).then(() => {
          console.log("meal deleted");
          setIsUpdated(!isUpdated);
       });

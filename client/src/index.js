@@ -19,7 +19,7 @@ const App = () => {
    const handleShow = () => setShow(true);
 
    useEffect(() => {
-      fetch("http://localhost:5000/api/meals")
+      fetch("/api/meals")
          .then((res) => res.json())
          .then((data) => {
             setMeals(data);

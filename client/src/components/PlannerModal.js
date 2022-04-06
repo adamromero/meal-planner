@@ -3,8 +3,6 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-const API_URL = "http://localhost:5000/api/meals/";
-
 const PlannerModal = ({
    show,
    onHide,
@@ -35,7 +33,7 @@ const PlannerModal = ({
 
       setMealsList([...mealsList, newMeal]);
 
-      await fetch(API_URL, {
+      await fetch("/api/meals/", {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
@@ -49,7 +47,7 @@ const PlannerModal = ({
    };
 
    const editMeal = async () => {
-      await fetch(API_URL + currentMeal._id, {
+      await fetch(`/api/meals/${currentMeal._id}`, {
          method: "PUT",
          headers: {
             "Content-Type": "application/json",
