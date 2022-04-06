@@ -3,6 +3,7 @@ import PlannerModal from "./PlannerModal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
+import Spinner from "react-bootstrap/Spinner";
 import { Pencil, Trash } from "react-bootstrap-icons";
 
 const API_URL = "http://localhost:5000/api/meals/";
@@ -13,6 +14,7 @@ const PlannerDay = ({
    setMealsList,
    isUpdated,
    setIsUpdated,
+   isLoading,
 }) => {
    const [show, setShow] = useState(false);
    const handleClose = () => setShow(false);
@@ -46,56 +48,70 @@ const PlannerDay = ({
                   {day}
                </ListGroup.Item>
 
-               {mealsList
-                  .filter(
-                     (meal) => meal.day.toLowerCase() === day.toLowerCase()
-                  )
-                  .map((meal) => (
-                     <ListGroup.Item key={meal._id}>
-                        <Row>
-                           <Col>
-                              <h5>{meal.name}</h5>
-                              <em>
-                                 {meal.ingredients.map(
-                                    (i) =>
-                                       `${i
-                                          .replaceAll(",", "")
-                                          .replaceAll("\n", ", ")}, `
-                                 )}
-                              </em>
-                           </Col>
-                           <Col className="d-flex justify-content-end">
-                              <button
-                                 title="Edit"
-                                 onClick={() => handleEdit(meal._id)}
-                                 style={{
-                                    backgroundColor: "transparent",
-                                    border: "none",
-                                 }}
-                              >
-                                 <Pencil
-                                    className="text-dark
+               {isLoading ? (
+                  <div
+                     style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        margin: "10px 0",
+                     }}
+                  >
+                     <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                     </Spinner>
+                  </div>
+               ) : (
+                  mealsList
+                     .filter(
+                        (meal) => meal.day.toLowerCase() === day.toLowerCase()
+                     )
+                     .map((meal) => (
+                        <ListGroup.Item key={meal._id}>
+                           <Row>
+                              <Col>
+                                 <h5>{meal.name}</h5>
+                                 <em>
+                                    {meal.ingredients.map(
+                                       (i) =>
+                                          `${i
+                                             .replaceAll(",", "")
+                                             .replaceAll("\n", ", ")}, `
+                                    )}
+                                 </em>
+                              </Col>
+                              <Col className="d-flex justify-content-end">
+                                 <button
+                                    title="Edit"
+                                    onClick={() => handleEdit(meal._id)}
+                                    style={{
+                                       backgroundColor: "transparent",
+                                       border: "none",
+                                    }}
+                                 >
+                                    <Pencil
+                                       className="text-dark
 "
-                                 />
-                              </button>
+                                    />
+                                 </button>
 
-                              <button
-                                 title="Delete"
-                                 onClick={() => handleDelete(meal._id)}
-                                 style={{
-                                    backgroundColor: "transparent",
-                                    border: "none",
-                                 }}
-                              >
-                                 <Trash
-                                    className="text-danger
+                                 <button
+                                    title="Delete"
+                                    onClick={() => handleDelete(meal._id)}
+                                    style={{
+                                       backgroundColor: "transparent",
+                                       border: "none",
+                                    }}
+                                 >
+                                    <Trash
+                                       className="text-danger
 "
-                                 />
-                              </button>
-                           </Col>
-                        </Row>
-                     </ListGroup.Item>
-                  ))}
+                                    />
+                                 </button>
+                              </Col>
+                           </Row>
+                        </ListGroup.Item>
+                     ))
+               )}
             </ListGroup>
          </Row>
 

@@ -8,12 +8,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 
-//import "./assets/main.css";
-
 const App = () => {
    const [meals, setMeals] = useState([]);
    const [ingredients, setIngredients] = useState([]);
    const [isUpdated, setIsUpdated] = useState(false);
+   const [isLoading, setIsLoading] = useState(true);
 
    const [show, setShow] = useState(false);
    const handleClose = () => setShow(false);
@@ -25,9 +24,8 @@ const App = () => {
          .then((data) => {
             setMeals(data);
             combineIngredientsIntoList(data);
+            setIsLoading(false);
          });
-
-      console.log("use effect");
    }, [isUpdated]);
 
    const combineIngredientsIntoList = (data) => {
@@ -86,6 +84,7 @@ const App = () => {
                   <Row>
                      <Planner
                         meals={meals}
+                        isLoading={isLoading}
                         isUpdated={isUpdated}
                         setIsUpdated={setIsUpdated}
                      />

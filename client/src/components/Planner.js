@@ -10,7 +10,7 @@ const getSortedWeek = (week) => {
    return sortedWeek;
 };
 
-const Planner = ({ meals, isUpdated, setIsUpdated }) => {
+const Planner = ({ meals, isLoading, isUpdated, setIsUpdated }) => {
    const [mealsList, setMealsList] = useState([]);
 
    useEffect(() => {
@@ -37,6 +37,7 @@ const Planner = ({ meals, isUpdated, setIsUpdated }) => {
                setMealsList={setMealsList}
                isUpdated={isUpdated}
                setIsUpdated={setIsUpdated}
+               isLoading={isLoading}
             />
          ))}
       </>
