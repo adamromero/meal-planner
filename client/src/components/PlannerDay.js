@@ -39,7 +39,7 @@ const PlannerDay = ({
 
    return (
       <>
-         <Row className="day">
+         <div className="day">
             <ListGroup>
                <ListGroup.Item
                   header={day}
@@ -106,7 +106,7 @@ const PlannerDay = ({
                      ))
                )}
             </ListGroup>
-         </Row>
+         </div>
 
          <PlannerModal
             show={show}

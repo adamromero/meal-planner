@@ -56,7 +56,7 @@ const App = () => {
                   background: black;
                   color: white;
                   padding: 25px 0;
-                  margin: 0 0 25px;
+                  margin: 0 0 50px;
                }
                .btn-primary {
                   background-color: #1c5b78;
@@ -78,13 +78,13 @@ const App = () => {
             <Row>
                <Col md={7} lg={6}>
                   <Row className="mb-3">
-                     <Col lg={3}>
-                        <Button variant="primary" onClick={handleShow}>
-                           Add Meal
-                        </Button>
+                     <Col>
+                        <Button onClick={handleShow}>Add Meal</Button>
                      </Col>
-                     <Col lg={3}>
-                        <Button>Saved Meal</Button>
+                     <Col className="d-flex justify-content-end">
+                        <Button onClick={() => console.log("saved meal")}>
+                           Saved Meal
+                        </Button>
                      </Col>
                   </Row>
                   <Row>
