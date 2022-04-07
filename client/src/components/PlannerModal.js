@@ -8,8 +8,6 @@ const PlannerModal = ({
    onHide,
    isNewMeal,
    meal,
-   mealsList,
-   setMealsList,
    isUpdated,
    setIsUpdated,
 }) => {
@@ -22,15 +20,12 @@ const PlannerModal = ({
    }, [meal]);
 
    const addMeal = async (e) => {
-      console.log(e.target.ingredients.value);
       const newMeal = {
          _id: "",
          name: e.target.name.value,
-         ingredients: e.target.ingredients.value.split(/(?:,|\n| )+/),
+         ingredients: e.target.ingredients.value.split(/(?:,|\n)+/),
          day: e.target.day.value,
       };
-
-      setMealsList([...mealsList, newMeal]);
 
       await fetch("/api/meals/", {
          method: "POST",

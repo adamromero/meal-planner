@@ -31,18 +31,11 @@ const App = () => {
       fetch("/api/meals")
          .then((res) => res.json())
          .then((data) => {
-            setMealsAndSplitIngredients(data);
+            setMeals(data);
             combineIngredientsIntoList(data);
             setIsLoading(false);
          });
    }, [isUpdated]);
-
-   const setMealsAndSplitIngredients = (data) => {
-      data.forEach(
-         (meal) => (meal.ingredients = meal.ingredients[0].split(/(?:,|\n)+/))
-      );
-      setMeals(data);
-   };
 
    const combineIngredientsIntoList = (data) => {
       let ingredientsArray = Array.from(
@@ -125,8 +118,7 @@ const App = () => {
                show={show}
                onHide={handleClose}
                isNewMeal={true}
-               mealsList={meals}
-               setMealsList={setMeals}
+               meals={meals}
                isUpdated={isUpdated}
                setIsUpdated={setIsUpdated}
             />

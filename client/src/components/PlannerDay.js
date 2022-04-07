@@ -131,8 +131,6 @@ const PlannerDay = ({
             onHide={handleClose}
             isNewMeal={currentMeal === null}
             meal={currentMeal}
-            mealsList={mealsList}
-            setMealsList={setMealsList}
             isUpdated={isUpdated}
             setIsUpdated={setIsUpdated}
          />

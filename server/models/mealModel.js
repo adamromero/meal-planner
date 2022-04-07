@@ -6,7 +6,7 @@ const mealSchema = mongoose.Schema(
          type: String,
          required: [true, "Please add a name"],
       },
-      ingredients: [String],
+      ingredients: [{ type: String }],
       day: {
          type: String,
          required: [true, "Please add a day"],
