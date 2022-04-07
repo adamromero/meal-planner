@@ -82,7 +82,7 @@ const App = () => {
          <header>
             <h1 className="text-center">Meal Planner</h1>
          </header>
-         <Container fluid="md">
+         <Container fluid="md" className="mb-5">
             <Row>
                <Col md={7} lg={6}>
                   <Row className="mb-3">
@@ -113,6 +113,8 @@ const App = () => {
             <SavedMealsModal
                show={showSavedMeals}
                handleClose={handleCloseSavedMeals}
+               isUpdated={isUpdated}
+               setIsUpdated={setIsUpdated}
             />
             <PlannerModal
                show={show}
