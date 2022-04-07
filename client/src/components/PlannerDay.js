@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import Spinner from "react-bootstrap/Spinner";
-import { Pencil, Trash } from "react-bootstrap-icons";
+import { Pencil, Trash, Heart } from "react-bootstrap-icons";
 
 const PlannerDay = ({
    day,
@@ -33,8 +33,11 @@ const PlannerDay = ({
       });
    };
 
-   const formatIngredient = (ingredient) => {
-      return `${ingredient.replaceAll(",", ", ").replaceAll("\n", ", ")}`;
+   const handleFavorite = (meal) => {
+      let savedMeals = JSON.parse(localStorage.getItem("savedMeals"));
+      savedMeals.push(meal);
+      savedMeals = JSON.stringify(savedMeals);
+      localStorage.setItem("savedMeals", savedMeals);
    };
 
    return (
@@ -73,12 +76,28 @@ const PlannerDay = ({
                               <Col>
                                  <h5>{meal.name}</h5>
                                  <em>
-                                    {meal.ingredients.map((ingredient) =>
-                                       formatIngredient(ingredient)
+                                    {meal.ingredients.map(
+                                       (ingredient, index) =>
+                                          `${ingredient}${
+                                             index !==
+                                             meal.ingredients.length - 1
+                                                ? ", "
+                                                : ""
+                                          }`
                                     )}
                                  </em>
                               </Col>
                               <Col className="d-flex justify-content-end">
+                                 <button
+                                    title="Add to Favorites"
+                                    onClick={() => handleFavorite(meal)}
+                                    style={{
+                                       backgroundColor: "transparent",
+                                       border: "none",
+                                    }}
+                                 >
+                                    <Heart className="text-danger" />
+                                 </button>
                                  <button
                                     title="Edit"
                                     onClick={() => handleEdit(meal._id)}
@@ -89,7 +108,6 @@ const PlannerDay = ({
                                  >
                                     <Pencil className="text-dark" />
                                  </button>
-
                                  <button
                                     title="Delete"
                                     onClick={() => handleDelete(meal._id)}

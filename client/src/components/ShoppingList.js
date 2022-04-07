@@ -36,6 +36,7 @@ const ShoppingList = ({ ingredients }) => {
          <Form.Group>
             <h2>Shopping List</h2>
             <Form.Select
+               className="mb-3"
                defaultValue="default"
                name="ingredients"
                onChange={(e) => {

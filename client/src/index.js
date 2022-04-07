@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import Planner from "./components/Planner.js";
 import PlannerModal from "./components/PlannerModal.js";
+import SavedMealsModal from "./components/SavedMealsModal.js";
 import ShoppingList from "./components/ShoppingList.js";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -18,22 +19,36 @@ const App = () => {
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
 
+   const [showSavedMeals, setShowSavedMeals] = useState(false);
+   const handleCloseSavedMeals = () => setShowSavedMeals(false);
+   const handleShowSavedMeals = () => setShowSavedMeals(true);
+
+   if (!localStorage.getItem("savedMeals")) {
+      localStorage.setItem("savedMeals", "[]");
+   }
+
    useEffect(() => {
       fetch("/api/meals")
          .then((res) => res.json())
          .then((data) => {
-            setMeals(data);
+            setMealsAndSplitIngredients(data);
             combineIngredientsIntoList(data);
             setIsLoading(false);
          });
    }, [isUpdated]);
 
+   const setMealsAndSplitIngredients = (data) => {
+      data.forEach(
+         (meal) => (meal.ingredients = meal.ingredients[0].split(/(?:,|\n)+/))
+      );
+      setMeals(data);
+   };
+
    const combineIngredientsIntoList = (data) => {
       let ingredientsArray = Array.from(
          new Set(
             data
-               .map((item) => item.ingredients)
-               .flat()
+               .flatMap((item) => item.ingredients)
                .map((item) => item.toLowerCase().split(/(?:,|\n)+/))
                .flat()
          )
@@ -82,7 +97,7 @@ const App = () => {
                         <Button onClick={handleShow}>Add Meal</Button>
                      </Col>
                      <Col className="d-flex justify-content-end">
-                        <Button onClick={() => console.log("saved meal")}>
+                        <Button onClick={handleShowSavedMeals}>
                            Saved Meal
                         </Button>
                      </Col>
@@ -102,7 +117,10 @@ const App = () => {
                   </Row>
                </Col>
             </Row>
-
+            <SavedMealsModal
+               show={showSavedMeals}
+               handleClose={handleCloseSavedMeals}
+            />
             <PlannerModal
                show={show}
                onHide={handleClose}

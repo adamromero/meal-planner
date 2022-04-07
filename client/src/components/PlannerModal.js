@@ -22,6 +22,7 @@ const PlannerModal = ({
    }, [meal]);
 
    const addMeal = async (e) => {
+      console.log(e.target.ingredients.value);
       const newMeal = {
          _id: "",
          name: e.target.name.value,
