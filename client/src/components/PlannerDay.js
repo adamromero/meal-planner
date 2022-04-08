@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import Spinner from "react-bootstrap/Spinner";
-import { Pencil, Trash, Heart } from "react-bootstrap-icons";
+import { Pencil, Trash, Heart, HeartFill } from "react-bootstrap-icons";
 
 const PlannerDay = ({
    day,
@@ -33,11 +33,17 @@ const PlannerDay = ({
       });
    };
 
-   const handleFavorite = (meal) => {
-      let savedMeals = JSON.parse(localStorage.getItem("savedMeals"));
-      savedMeals.push(meal);
-      savedMeals = JSON.stringify(savedMeals);
-      localStorage.setItem("savedMeals", savedMeals);
+   const handleFavorite = async (meal) => {
+      await fetch(`/api/meals/${meal._id}`, {
+         method: "PUT",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify({ isSaved: !meal.isSaved }),
+      })
+         .then((res) => res.json())
+         .catch((err) => console.error(err));
+      setIsUpdated(!isUpdated);
    };
 
    return (
@@ -96,7 +102,11 @@ const PlannerDay = ({
                                        border: "none",
                                     }}
                                  >
-                                    <Heart className="text-danger" />
+                                    {meal.isSaved ? (
+                                       <HeartFill className="text-danger" />
+                                    ) : (
+                                       <Heart className="text-danger" />
+                                    )}
                                  </button>
                                  <button
                                     title="Edit"

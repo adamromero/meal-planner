@@ -7,25 +7,34 @@ import Button from "react-bootstrap/Button";
 import { Trash } from "react-bootstrap-icons";
 
 const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
-   const [savedMeals, setSavedMeals] = useState(getLocalStorageMealData());
+   const [savedMeals, setSavedMeals] = useState([]);
 
    useEffect(() => {
-      console.log("savedMeals", savedMeals);
-   }, [savedMeals]);
+      getSavedMeals();
+   }, [isUpdated]);
 
-   function getLocalStorageMealData() {
-      return localStorage.getItem("savedMeals")
-         ? JSON.parse(localStorage.getItem("savedMeals"))
-         : [];
-   }
-
-   const removeFromSavedMeals = (id) => {
-      const meals = savedMeals.filter((meal) => meal._id !== id);
-      setSavedMeals(meals);
-      localStorage.setItem("savedMeals", JSON.stringify(meals));
+   const getSavedMeals = async () => {
+      fetch("/api/meals")
+         .then((res) => res.json())
+         .then((data) => {
+            setSavedMeals(data.filter((item) => item.isSaved));
+         });
    };
 
-   const addMeal = async (meal) => {
+   const removeFromSavedMeals = async (id) => {
+      await fetch(`/api/meals/${id}`, {
+         method: "PUT",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify({ isSaved: false }),
+      })
+         .then((res) => res.json())
+         .catch((err) => console.error(err));
+      setIsUpdated(!isUpdated);
+   };
+
+   const addToSavedMeals = async (meal) => {
       await fetch("/api/meals/", {
          method: "POST",
          headers: {
@@ -62,7 +71,7 @@ const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
                               )}
                            </em>
                            <p>{meal.day}</p>
-                           <Button onClick={() => addMeal(meal)}>
+                           <Button onClick={() => addToSavedMeals(meal)}>
                               Add to planner
                            </Button>
                            <button

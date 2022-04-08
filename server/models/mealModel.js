@@ -11,6 +11,10 @@ const mealSchema = mongoose.Schema(
          type: String,
          required: [true, "Please add a day"],
       },
+      isSaved: {
+         type: Boolean,
+         default: false,
+      },
    },
    {
       timestamps: true,
