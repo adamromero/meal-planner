@@ -131,7 +131,7 @@ const App = () => {
                      />
                   </Row>
                </Col>
-               <Col md={5} lg={6} className="d-sm-none d-md-block">
+               <Col md={5} lg={6} className="d-none d-md-block">
                   <Row>
                      <ShoppingList ingredients={ingredients} />
                   </Row>
