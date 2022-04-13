@@ -6,14 +6,29 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Trash } from "react-bootstrap-icons";
 import { useBetween } from "use-between";
 
-function getLocalStorageMealData() {
-   return localStorage.getItem("shoppingList")
+function getLocalStorageMealData(ingredients) {
+   return JSON.parse(localStorage.getItem("shoppingList")).length
       ? JSON.parse(localStorage.getItem("shoppingList"))
       : ingredients;
 }
 
+function setLocalStorageMealData(ingredients) {
+   if (JSON.parse(localStorage.getItem("shoppingList")).length) {
+      const localStorageShoppingList = JSON.parse(
+         localStorage.getItem("shoppingList")
+      );
+      localStorageShoppingList.concat(ingredients);
+      localStorage.setItem(
+         "shoppingList",
+         JSON.stringify(localStorageShoppingList)
+      );
+   } else {
+      localStorage.setItem("shoppingList", JSON.stringify(ingredients));
+   }
+}
+
 const shoppingListState = () => {
-   const [shoppingList, setShoppingList] = useState(getLocalStorageMealData());
+   const [shoppingList, setShoppingList] = useState([]);
    const [inputItem, setInputItem] = useState("");
 
    return { shoppingList, setShoppingList, inputItem, setInputItem };
@@ -26,11 +41,9 @@ const ShoppingList = ({ ingredients }) => {
       useSharedState();
 
    useEffect(() => {
-      /*
-      updated meals will pass new ingredients as props which will
-      be pushed into local storage array and local storage will then
-      be stored in shoppingList state
-      */
+      setLocalStorageMealData(ingredients);
+      setShoppingList(getLocalStorageMealData(ingredients));
+      console.log(ingredients);
    }, [ingredients]);
 
    const addToShoppingList = (item) => {
@@ -40,6 +53,14 @@ const ShoppingList = ({ ingredients }) => {
          ).length > 0
       ) {
          setShoppingList([...shoppingList, item]);
+         const localStorageShoppingList = JSON.parse(
+            localStorage.getItem("shoppingList")
+         );
+         localStorageShoppingList.push(item);
+         localStorage.setItem(
+            "shoppingList",
+            JSON.stringify(localStorageShoppingList)
+         );
       }
    };
 
@@ -50,11 +71,13 @@ const ShoppingList = ({ ingredients }) => {
          )
       );
 
-      // const shoppingListFromLocalStorage = JSON.parse(localStorage.getItem("shoppingList"));
-      // const updatedList = shoppingListFromLocalStorage.filter(
-      //    (listItem) => listItem.toLowerCase() !== item.toLowerCase()
-      // )
-      // shoppingListFromLocalStorage
+      const localStorageShoppingList = JSON.parse(
+         localStorage.getItem("shoppingList")
+      );
+      const updatedList = localStorageShoppingList.filter(
+         (listItem) => listItem.toLowerCase() !== item.toLowerCase()
+      );
+      localStorage.setItem("shoppingList", JSON.stringify(updatedList));
    };
 
    return (

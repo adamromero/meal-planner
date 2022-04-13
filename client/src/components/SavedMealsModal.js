@@ -17,14 +17,11 @@ const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
       const response = await fetch("/api/meals");
       const data = await response.json();
 
-      console.log(data);
-
       if (!JSON.parse(localStorage.getItem("savedMeals")).length) {
          const savedMealsData = data.filter((item) => item.isSaved);
          setSavedMeals(savedMealsData);
 
          (function () {
-            console.log(savedMealsData);
             localStorage.setItem("savedMeals", JSON.stringify(savedMealsData));
          })();
       } else {

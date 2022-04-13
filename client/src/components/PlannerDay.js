@@ -28,7 +28,6 @@ const PlannerDay = ({
 
    const handleDelete = (id) => {
       fetch(`/api/meals/${id}`, { method: "DELETE" }).then(() => {
-         console.log("meal deleted");
          setIsUpdated(!isUpdated);
       });
    };
@@ -58,17 +57,15 @@ const PlannerDay = ({
                JSON.stringify(savedMealsLocalStorage)
             );
          }
-         console.log("added to local storage");
       } else {
          const savedMealsLocalStorage = JSON.parse(
             localStorage.getItem("savedMeals")
          );
+         //change this to id instead of name in the future
          const filteredMeals = savedMealsLocalStorage.filter(
-            (localMeal) => localMeal._id !== meal._id
+            (localMeal) => localMeal.name !== meal.name
          );
-         console.log("filtered: ", filteredMeals);
          localStorage.setItem("savedMeals", JSON.stringify(filteredMeals));
-         console.log("removed from local storage");
       }
 
       setIsUpdated(!isUpdated);
