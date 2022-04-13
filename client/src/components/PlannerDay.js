@@ -34,15 +34,43 @@ const PlannerDay = ({
    };
 
    const handleFavorite = async (meal) => {
-      await fetch(`/api/meals/${meal._id}`, {
+      const response = await fetch(`/api/meals/${meal._id}`, {
          method: "PUT",
          headers: {
             "Content-Type": "application/json",
          },
          body: JSON.stringify({ isSaved: !meal.isSaved }),
-      })
-         .then((res) => res.json())
-         .catch((err) => console.error(err));
+      });
+
+      const data = await response.json();
+
+      if (data.isSaved) {
+         const savedMealsLocalStorage = JSON.parse(
+            localStorage.getItem("savedMeals")
+         );
+         const index = savedMealsLocalStorage.findIndex(
+            (localMeal) => localMeal._id === meal._id
+         );
+         if (index === -1) {
+            savedMealsLocalStorage.push(meal);
+            localStorage.setItem(
+               "savedMeals",
+               JSON.stringify(savedMealsLocalStorage)
+            );
+         }
+         console.log("added to local storage");
+      } else {
+         const savedMealsLocalStorage = JSON.parse(
+            localStorage.getItem("savedMeals")
+         );
+         const filteredMeals = savedMealsLocalStorage.filter(
+            (localMeal) => localMeal._id !== meal._id
+         );
+         console.log("filtered: ", filteredMeals);
+         localStorage.setItem("savedMeals", JSON.stringify(filteredMeals));
+         console.log("removed from local storage");
+      }
+
       setIsUpdated(!isUpdated);
    };
 
@@ -95,7 +123,11 @@ const PlannerDay = ({
                               </Col>
                               <Col className="d-flex justify-content-end">
                                  <button
-                                    title="Add to Favorites"
+                                    title={
+                                       meal.isSaved
+                                          ? "Remove from Favorites"
+                                          : "Add to Favorites"
+                                    }
                                     onClick={() => handleFavorite(meal)}
                                     style={{
                                        backgroundColor: "transparent",

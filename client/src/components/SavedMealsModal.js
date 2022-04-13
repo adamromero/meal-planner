@@ -7,19 +7,36 @@ import Button from "react-bootstrap/Button";
 import { Trash } from "react-bootstrap-icons";
 
 const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
-   const [savedMeals, setSavedMeals] = useState([]);
+   const [savedMeals, setSavedMeals] = useState(getLocalStorageMealData());
 
    useEffect(() => {
       getSavedMeals();
    }, [isUpdated]);
 
    const getSavedMeals = async () => {
-      fetch("/api/meals")
-         .then((res) => res.json())
-         .then((data) => {
-            setSavedMeals(data.filter((item) => item.isSaved));
-         });
+      const response = await fetch("/api/meals");
+      const data = await response.json();
+
+      console.log(data);
+
+      if (!JSON.parse(localStorage.getItem("savedMeals")).length) {
+         const savedMealsData = data.filter((item) => item.isSaved);
+         setSavedMeals(savedMealsData);
+
+         (function () {
+            console.log(savedMealsData);
+            localStorage.setItem("savedMeals", JSON.stringify(savedMealsData));
+         })();
+      } else {
+         setSavedMeals(JSON.parse(localStorage.getItem("savedMeals")));
+      }
    };
+
+   function getLocalStorageMealData() {
+      return localStorage.getItem("savedMeals")
+         ? JSON.parse(localStorage.getItem("savedMeals"))
+         : [];
+   }
 
    const removeFromSavedMeals = async (id) => {
       await fetch(`/api/meals/${id}`, {
@@ -31,16 +48,26 @@ const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
       })
          .then((res) => res.json())
          .catch((err) => console.error(err));
+
+      const filteredMeals = savedMeals.filter((meal) => meal._id !== id);
+      setSavedMeals(filteredMeals);
+      console.log("savedMeals: ", filteredMeals);
+      localStorage.setItem("savedMeals", JSON.stringify(filteredMeals));
       setIsUpdated(!isUpdated);
    };
 
-   const addToSavedMeals = async (meal) => {
-      await fetch("/api/meals/", {
+   const addSavedMealToPlanner = async (meal) => {
+      const savedMeal = {
+         ...meal,
+         isSaved: true,
+      };
+
+      await fetch("/api/meals", {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
          },
-         body: JSON.stringify(meal),
+         body: JSON.stringify(savedMeal),
       })
          .then((res) => res.json())
          .catch((err) => console.error(err));
@@ -71,7 +98,7 @@ const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
                               )}
                            </em>
                            <p>{meal.day}</p>
-                           <Button onClick={() => addToSavedMeals(meal)}>
+                           <Button onClick={() => addSavedMealToPlanner(meal)}>
                               Add to planner
                            </Button>
                            <button

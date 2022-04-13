@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const mealSchema = mongoose.Schema(
    {
+      _id: { type: mongoose.Types.ObjectId, auto: true },
       name: {
          type: String,
          required: [true, "Please add a name"],
@@ -21,4 +22,6 @@ const mealSchema = mongoose.Schema(
    }
 );
 
-module.exports = mongoose.model("Meal", mealSchema);
+const Meal = mongoose.model("Meal", mealSchema);
+
+module.exports = Meal;

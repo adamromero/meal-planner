@@ -25,6 +25,7 @@ const PlannerModal = ({
          name: e.target.name.value,
          ingredients: e.target.ingredients.value.split(/(?:,|\n)+/),
          day: e.target.day.value,
+         isSaved: false,
       };
 
       await fetch("/api/meals/", {
@@ -83,6 +84,7 @@ const PlannerModal = ({
          <Modal.Body>
             <Form onSubmit={handleSubmit}>
                <Form.Control
+                  className="mb-3"
                   name="name"
                   type="text"
                   placeholder="Meal"

@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const {
    getMeals,
-   getMeal,
    createMeal,
    updateMeal,
    deleteMeal,
@@ -10,6 +9,6 @@ const {
 
 router.route("/").get(getMeals).post(createMeal);
 
-router.route("/:id").get(getMeal).put(updateMeal).delete(deleteMeal);
+router.route("/:id").put(updateMeal).delete(deleteMeal);
 
 module.exports = router;

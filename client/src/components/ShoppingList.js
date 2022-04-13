@@ -4,13 +4,33 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Trash } from "react-bootstrap-icons";
+import { useBetween } from "use-between";
 
-const ShoppingList = ({ ingredients }) => {
-   const [shoppingList, setShoppingList] = useState([]);
+function getLocalStorageMealData() {
+   return localStorage.getItem("shoppingList")
+      ? JSON.parse(localStorage.getItem("shoppingList"))
+      : ingredients;
+}
+
+const shoppingListState = () => {
+   const [shoppingList, setShoppingList] = useState(getLocalStorageMealData());
    const [inputItem, setInputItem] = useState("");
 
+   return { shoppingList, setShoppingList, inputItem, setInputItem };
+};
+
+const useSharedState = () => useBetween(shoppingListState);
+
+const ShoppingList = ({ ingredients }) => {
+   const { shoppingList, setShoppingList, inputItem, setInputItem } =
+      useSharedState();
+
    useEffect(() => {
-      setShoppingList(ingredients);
+      /*
+      updated meals will pass new ingredients as props which will
+      be pushed into local storage array and local storage will then
+      be stored in shoppingList state
+      */
    }, [ingredients]);
 
    const addToShoppingList = (item) => {
@@ -29,6 +49,12 @@ const ShoppingList = ({ ingredients }) => {
             (listItem) => listItem.toLowerCase() !== item.toLowerCase()
          )
       );
+
+      // const shoppingListFromLocalStorage = JSON.parse(localStorage.getItem("shoppingList"));
+      // const updatedList = shoppingListFromLocalStorage.filter(
+      //    (listItem) => listItem.toLowerCase() !== item.toLowerCase()
+      // )
+      // shoppingListFromLocalStorage
    };
 
    return (

@@ -8,6 +8,18 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Offcanvas from "react-bootstrap/Offcanvas";
+
+if (!localStorage.getItem("savedMeals")) {
+   localStorage.setItem("savedMeals", "[]");
+}
+
+if (!localStorage.getItem("shoppingList")) {
+   localStorage.setItem("shoppingList", "[]");
+}
 
 const App = () => {
    const [meals, setMeals] = useState([]);
@@ -22,10 +34,6 @@ const App = () => {
    const [showSavedMeals, setShowSavedMeals] = useState(false);
    const handleCloseSavedMeals = () => setShowSavedMeals(false);
    const handleShowSavedMeals = () => setShowSavedMeals(true);
-
-   if (!localStorage.getItem("savedMeals")) {
-      localStorage.setItem("savedMeals", "[]");
-   }
 
    useEffect(() => {
       fetch("/api/meals")
@@ -80,7 +88,26 @@ const App = () => {
             `}
          </style>
          <header>
-            <h1 className="text-center">Meal Planner</h1>
+            <Navbar collapseOnSelect expand="md" variant="dark">
+               <Container fluid>
+                  <Navbar.Brand className="m-auto">
+                     <h1 className="text-center">Meal Planner</h1>
+                  </Navbar.Brand>
+                  <Navbar.Toggle aria-controls="offcanvasNavbar" />
+                  <Navbar.Collapse id="offcanvasNavbar">
+                     <Navbar.Offcanvas
+                        id="offcanvasNavbar"
+                        aria-labelledby="offcanvasNavbarLabel"
+                        placement="end"
+                     >
+                        <Offcanvas.Header closeButton></Offcanvas.Header>
+                        <Offcanvas.Body>
+                           <ShoppingList ingredients={ingredients} />
+                        </Offcanvas.Body>
+                     </Navbar.Offcanvas>
+                  </Navbar.Collapse>
+               </Container>
+            </Navbar>
          </header>
          <Container fluid="md" className="mb-5">
             <Row>
@@ -91,7 +118,7 @@ const App = () => {
                      </Col>
                      <Col className="d-flex justify-content-end">
                         <Button onClick={handleShowSavedMeals}>
-                           Saved Meal
+                           Saved Meals
                         </Button>
                      </Col>
                   </Row>
