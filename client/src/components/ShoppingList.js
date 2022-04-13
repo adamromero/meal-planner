@@ -17,11 +17,16 @@ function setLocalStorageMealData(ingredients) {
       const localStorageShoppingList = JSON.parse(
          localStorage.getItem("shoppingList")
       );
-      localStorageShoppingList.concat(ingredients);
-      localStorage.setItem(
-         "shoppingList",
-         JSON.stringify(localStorageShoppingList)
+
+      const newShoppingListItem = ingredients.filter(
+         (item) => !localStorageShoppingList.includes(item)
       );
+
+      if (newShoppingListItem) {
+         const combinedLists =
+            localStorageShoppingList.concat(newShoppingListItem);
+         localStorage.setItem("shoppingList", JSON.stringify(combinedLists));
+      }
    } else {
       localStorage.setItem("shoppingList", JSON.stringify(ingredients));
    }
