@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthState";
 
 import Container from "react-bootstrap/Container";
@@ -29,19 +30,23 @@ const MealPlanner = () => {
    const handleCloseSavedMeals = () => setShowSavedMeals(false);
    const handleShowSavedMeals = () => setShowSavedMeals(true);
 
-   const { name } = useContext(AuthContext);
+   const { id, name, handleLogout } = useContext(AuthContext);
 
-   console.log("name: ", name);
+   const navigate = useNavigate();
 
    useEffect(() => {
-      fetch("/api/meals")
+      if (!name) {
+         navigate("/login");
+      }
+
+      fetch(`/api/meals/${id}`)
          .then((res) => res.json())
          .then((data) => {
             setMeals(data);
             combineIngredientsIntoList(data);
             setIsLoading(false);
          });
-   }, [isUpdated]);
+   }, [name, isUpdated]);
 
    const combineIngredientsIntoList = (data) => {
       let ingredientsArray = Array.from(
@@ -89,7 +94,9 @@ const MealPlanner = () => {
             <Navbar collapseOnSelect expand="md" variant="dark">
                <Container fluid>
                   <Navbar.Brand className="m-auto">
-                     <h1 className="text-center">Meal Planner - {name}</h1>
+                     <h1 className="text-center">Meal Planner</h1>
+                     <h2>{name}</h2>
+                     <Button onClick={() => handleLogout()}>Log out</Button>
                   </Navbar.Brand>
                   <Navbar.Toggle aria-controls="offcanvasNavbar" />
                   <Navbar.Collapse id="offcanvasNavbar">

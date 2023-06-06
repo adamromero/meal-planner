@@ -2,6 +2,11 @@ const asyncHandler = require("express-async-handler");
 
 const Meal = require("../models/mealModel");
 
+const getMealsByUser = asyncHandler(async (req, res) => {
+   const meals = await Meal.find({ createdBy: req.params.id });
+   res.status(200).json(meals);
+});
+
 const getMeals = asyncHandler(async (req, res) => {
    const meals = await Meal.find({});
    res.status(200).json(meals);
@@ -18,6 +23,7 @@ const createMeal = asyncHandler(async (req, res) => {
       ingredients: req.body.ingredients,
       day: req.body.day,
       isSaved: req.body.isSaved,
+      createdBy: req.body.createdBy,
    });
 
    res.status(200).json(meal);
@@ -49,6 +55,7 @@ const deleteMeal = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+   getMealsByUser,
    getMeals,
    createMeal,
    updateMeal,

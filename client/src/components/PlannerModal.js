@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+
+import { AuthContext } from "../context/AuthState";
 
 const PlannerModal = ({
    show,
@@ -12,6 +14,7 @@ const PlannerModal = ({
    setIsUpdated,
 }) => {
    const [currentMeal, setCurrentMeal] = useState([]);
+   const { id } = useContext(AuthContext);
 
    useEffect(() => {
       if (meal) {
@@ -26,9 +29,10 @@ const PlannerModal = ({
          ingredients: e.target.ingredients.value.split(/(?:,|\n)+/),
          day: e.target.day.value,
          isSaved: false,
+         createdBy: id,
       };
 
-      await fetch("/api/meals/", {
+      await fetch(`/api/meals/${id}`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",

@@ -17,7 +17,6 @@ const Login = () => {
       e.preventDefault();
       console.log(credentials);
       handleLogin(credentials);
-      //navigate("/");
    };
 
    const handleInputChange = (e) => {
@@ -28,7 +27,6 @@ const Login = () => {
    };
 
    useEffect(() => {
-      console.log(name);
       if (name) {
          navigate("/");
       }

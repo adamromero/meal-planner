@@ -1,12 +1,17 @@
 import React, { createContext, useReducer } from "react";
 import AuthReducer from "./AuthReducer";
 
+const id = JSON.parse(localStorage.getItem("id"));
 const name = JSON.parse(localStorage.getItem("name"));
+const email = JSON.parse(localStorage.getItem("email"));
 //const token = JSON.parse(localStorage.getItem("token"));
 
 const initialState = {
    //isAuthenticated: token,
+   id: id ? id : null,
    name: name ? name : null,
+   email: email ? email : null,
+   meals: [],
    //token: null,
 };
 
@@ -56,7 +61,10 @@ export const AuthProvider = ({ children }) => {
       <AuthContext.Provider
          value={{
             isAuthenticated: state.isAuthenticated,
+            id: state.id,
             name: state.name,
+            email: state.email,
+            meals: state.meals,
             handleRegister,
             handleLogin,
             handleLogout,

@@ -1,31 +1,40 @@
 export default (state, action) => {
    switch (action.type) {
       case "LOGIN":
-         localStorage.setItem(
-            "username",
-            JSON.stringify(action.payload.username)
-         );
-         localStorage.setItem("token", JSON.stringify(action.payload.token));
+         localStorage.setItem("id", JSON.stringify(action.payload._id));
+         localStorage.setItem("name", JSON.stringify(action.payload.name));
+         localStorage.setItem("email", JSON.stringify(action.payload.email));
+         //localStorage.setItem("token", JSON.stringify(action.payload.token));
          return {
             ...state,
             isAuthenticated: true,
-            username: action.payload.username,
-            token: action.payload.token,
+            id: action.payload._id,
+            name: action.payload.name,
+            email: action.payload.email,
+            meals: action.payload.meals,
+            //token: action.payload.token,
             error: null,
          };
       case "LOGOUT":
-         localStorage.removeItem("username");
+         localStorage.removeItem("id");
+         localStorage.removeItem("name");
+         localStorage.removeItem("email");
          localStorage.removeItem("token");
+         console.log("logged out");
          return {
             ...state,
             isAuthenticated: false,
-            username: null,
-            token: null,
+            id: null,
+            name: null,
+            email: null,
+            //token: null,
             error: null,
          };
 
       case "ERROR":
-         localStorage.removeItem("username");
+         localStorage.removeItem("id");
+         localStorage.removeItem("name");
+         localStorage.removeItem("email");
          localStorage.removeItem("token");
 
       default:
