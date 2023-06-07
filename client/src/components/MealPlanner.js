@@ -39,14 +39,19 @@ const MealPlanner = () => {
          navigate("/login");
       }
 
-      fetch(`/api/meals/${id}`)
-         .then((res) => res.json())
-         .then((data) => {
-            setMeals(data);
-            combineIngredientsIntoList(data);
-            setIsLoading(false);
-         });
+      getMealsByUser();
    }, [name, isUpdated]);
+
+   const getMealsByUser = async () => {
+      if (id) {
+         const response = await fetch(`/api/meals/${id}`);
+         const data = await response.json();
+
+         setMeals(data);
+         combineIngredientsIntoList(data);
+         setIsLoading(false);
+      }
+   };
 
    const combineIngredientsIntoList = (data) => {
       let ingredientsArray = Array.from(

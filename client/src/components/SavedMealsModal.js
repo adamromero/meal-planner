@@ -10,7 +10,7 @@ const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
    const [savedMeals, setSavedMeals] = useState(getLocalStorageMealData());
 
    useEffect(() => {
-      getSavedMeals();
+      //getSavedMeals();
    }, [isUpdated]);
 
    const getSavedMeals = async () => {
