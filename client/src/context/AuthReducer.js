@@ -1,5 +1,6 @@
 export default (state, action) => {
    switch (action.type) {
+      case "REGISTER":
       case "LOGIN":
          localStorage.setItem("id", JSON.stringify(action.payload._id));
          localStorage.setItem("name", JSON.stringify(action.payload.name));

@@ -71,12 +71,6 @@ const MealPlanner = () => {
       <>
          <style type="text/css">
             {`
-                header {
-                   background: black;
-                   color: white;
-                   padding: 25px 0;
-                   margin: 0 0 50px;
-                }
                 .btn-primary {
                    background-color: #1c5b78;
                    border-color: #1c5b78;
@@ -91,14 +85,26 @@ const MealPlanner = () => {
              `}
          </style>
          <header>
-            <Navbar collapseOnSelect expand="md" variant="dark">
+            <Navbar
+               collapseOnSelect
+               expand="md"
+               variant="dark"
+               className="pt-4 pb-4 mb-4 bg-dark text-light"
+            >
                <Container fluid>
-                  <Navbar.Brand className="m-auto">
-                     <h1 className="text-center">Meal Planner</h1>
-                     <h2>{name}</h2>
-                     <Button onClick={() => handleLogout()}>Log out</Button>
+                  <Navbar.Brand
+                     className="m-auto d-flex justify-content-between"
+                     style={{ width: "100%" }}
+                  >
+                     <div>
+                        <h1 className="text-center">Meal Planner</h1>
+                     </div>
+                     <div className="d-flex align-items-center gap-3">
+                        <h2 className="fs-6 m-0">{name}</h2>
+                        <Button onClick={() => handleLogout()}>Log out</Button>
+                     </div>
+                     <Navbar.Toggle aria-controls="offcanvasNavbar" />
                   </Navbar.Brand>
-                  <Navbar.Toggle aria-controls="offcanvasNavbar" />
                   <Navbar.Collapse id="offcanvasNavbar">
                      <Navbar.Offcanvas
                         id="offcanvasNavbar"
