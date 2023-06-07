@@ -10,7 +10,7 @@ import Alert from "react-bootstrap/Alert";
 import WelcomePanel from "./WelcomePanel";
 
 const Login = () => {
-   const { name, handleLogin, error } = useContext(AuthContext);
+   const { name, handleLogin, error, message } = useContext(AuthContext);
    const initialState = {
       email: "",
       password: "",
@@ -56,7 +56,7 @@ const Login = () => {
          </style>
          <WelcomePanel />
          <Container>
-            {error && <Alert variant="danger">Failed to login</Alert>}
+            {error && <Alert variant="danger">{message}</Alert>}
             <h1 className="fs-4">Login</h1>
             <Form onSubmit={(e) => handleLoginSubmission(e)}>
                <Form.Control

@@ -11,8 +11,8 @@ const initialState = {
    id: id ? id : null,
    name: name ? name : null,
    email: email ? email : null,
-   meals: [],
    error: false,
+   message: "",
    //token: null,
 };
 
@@ -28,16 +28,12 @@ export const AuthProvider = ({ children }) => {
          body: JSON.stringify(credentials),
       });
 
+      const jsonData = await response.json();
       if (response.status !== 200) {
-         dispatch({ type: "ERROR" });
+         dispatch({ type: "ERROR", payload: jsonData });
       } else {
-         const jsonData = await response.json();
          dispatch({ type: "LOGIN", payload: jsonData });
       }
-   }
-
-   async function handleLogout() {
-      dispatch({ type: "LOGOUT" });
    }
 
    async function handleRegister(credentials) {
@@ -47,12 +43,17 @@ export const AuthProvider = ({ children }) => {
          body: JSON.stringify(credentials),
       });
 
-      if (response.status !== 200) {
-         dispatch({ type: "ERROR" });
+      const jsonData = await response.json();
+      if (response.status !== 201) {
+         dispatch({ type: "ERROR", payload: jsonData });
       } else {
-         const jsonData = await response.json();
+         console.log("register is here");
          dispatch({ type: "REGISTER", payload: jsonData });
       }
+   }
+
+   async function handleLogout() {
+      dispatch({ type: "LOGOUT" });
    }
 
    return (
@@ -62,8 +63,8 @@ export const AuthProvider = ({ children }) => {
             id: state.id,
             name: state.name,
             email: state.email,
-            meals: state.meals,
             error: state.error,
+            message: state.message,
             handleRegister,
             handleLogin,
             handleLogout,

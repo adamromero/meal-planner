@@ -4,10 +4,18 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
 
 const registerUser = asyncHandler(async (req, res) => {
-   const { name, email, password } = req.body;
+   const { name, email, password, confirmPassword } = req.body;
 
-   if (!name || !email || !password) {
+   console.log(name, email, password, confirmPassword);
+
+   if (!name || !email || !password || !confirmPassword) {
       res.status(400).json({ message: "Please provide required fields" });
+      return;
+   }
+
+   if (password !== confirmPassword) {
+      res.status(400).json({ message: "Passwords do not match" });
+      return;
    }
 
    const userExists = await User.findOne({ email });

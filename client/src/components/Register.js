@@ -5,11 +5,12 @@ import { AuthContext } from "../context/AuthState";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 
 import WelcomePanel from "./WelcomePanel";
 
 const Register = () => {
-   const { name, handleRegister } = useContext(AuthContext);
+   const { name, handleRegister, error, message } = useContext(AuthContext);
    const navigate = useNavigate();
 
    const initialState = {
@@ -58,6 +59,7 @@ const Register = () => {
          </style>
          <WelcomePanel />
          <Container>
+            {error && <Alert variant="danger">{message}</Alert>}
             <h1 className="fs-4">Register</h1>
             <Form onSubmit={(e) => handleRegisterSubmission(e)}>
                <Form.Control

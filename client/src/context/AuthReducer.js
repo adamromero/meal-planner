@@ -13,7 +13,7 @@ export default (state, action) => {
             id: action.payload._id,
             name: action.payload.name,
             email: action.payload.email,
-            meals: action.payload.meals,
+            message: action.payload.message,
             //token: action.payload.token,
             error: null,
          };
@@ -45,6 +45,7 @@ export default (state, action) => {
             name: null,
             email: null,
             error: true,
+            message: action.payload.message,
          };
 
       default:
