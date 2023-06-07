@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
@@ -6,34 +6,23 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { Trash } from "react-bootstrap-icons";
 
+import { AuthContext } from "../context/AuthState";
+
 const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
-   const [savedMeals, setSavedMeals] = useState(getLocalStorageMealData());
+   const [savedMeals, setSavedMeals] = useState([]);
+   const { id } = useContext(AuthContext);
 
    useEffect(() => {
-      //getSavedMeals();
-   }, [isUpdated]);
+      getSavedMeals();
+   }, [isUpdated, savedMeals]);
 
    const getSavedMeals = async () => {
-      const response = await fetch("/api/meals");
+      const response = await fetch(`/api/meals/${id}`);
       const data = await response.json();
 
-      if (!JSON.parse(localStorage.getItem("savedMeals")).length) {
-         const savedMealsData = data.filter((item) => item.isSaved);
-         setSavedMeals(savedMealsData);
-
-         (function () {
-            localStorage.setItem("savedMeals", JSON.stringify(savedMealsData));
-         })();
-      } else {
-         setSavedMeals(JSON.parse(localStorage.getItem("savedMeals")));
-      }
+      const savedMealsData = data.filter((item) => item.isSaved);
+      setSavedMeals(savedMealsData);
    };
-
-   function getLocalStorageMealData() {
-      return localStorage.getItem("savedMeals")
-         ? JSON.parse(localStorage.getItem("savedMeals"))
-         : [];
-   }
 
    const removeFromSavedMeals = async (id) => {
       await fetch(`/api/meals/${id}`, {
@@ -48,9 +37,6 @@ const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
 
       const filteredMeals = savedMeals.filter((meal) => meal._id !== id);
       setSavedMeals(filteredMeals);
-      console.log("savedMeals: ", filteredMeals);
-      localStorage.setItem("savedMeals", JSON.stringify(filteredMeals));
-      setIsUpdated(!isUpdated);
    };
 
    const addSavedMealToPlanner = async (meal) => {

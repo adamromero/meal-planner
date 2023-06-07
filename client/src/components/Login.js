@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthState";
 
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
@@ -56,26 +58,30 @@ const Login = () => {
          </style>
          <WelcomePanel />
          <Container>
-            {error && <Alert variant="danger">{message}</Alert>}
-            <h1 className="fs-4">Login</h1>
-            <Form onSubmit={(e) => handleLoginSubmission(e)}>
-               <Form.Control
-                  type="text"
-                  name="email"
-                  onChange={handleInputChange}
-                  placeholder="Email"
-               />
-               <br />
-               <Form.Control
-                  type="password"
-                  name="password"
-                  onChange={handleInputChange}
-                  placeholder="Password"
-               />
-               <br />
-               <Button type="submit">Submit</Button>
-            </Form>
-            <Link to="/register">Click here to register</Link>
+            <Row>
+               <Col sm={12} md={6}>
+                  {error && <Alert variant="danger">{message}</Alert>}
+                  <h1 className="fs-4">Login</h1>
+                  <Form onSubmit={(e) => handleLoginSubmission(e)}>
+                     <Form.Control
+                        type="text"
+                        name="email"
+                        onChange={handleInputChange}
+                        placeholder="Email"
+                     />
+                     <br />
+                     <Form.Control
+                        type="password"
+                        name="password"
+                        onChange={handleInputChange}
+                        placeholder="Password"
+                     />
+                     <br />
+                     <Button type="submit">Submit</Button>
+                  </Form>
+                  <Link to="/register">Click here to register</Link>
+               </Col>
+            </Row>
          </Container>
       </>
    );

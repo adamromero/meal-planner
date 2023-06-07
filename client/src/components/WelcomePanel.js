@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 
 const WelcomePanel = () => {
    return (
-      <div className="pt-4 pb-4 mb-4 bg-dark text-light">
+      <div className="pt-4 pb-4 mb-5 bg-dark text-light">
          <Container>
             <h1>Meal Planner</h1>
             <p className="m-0">

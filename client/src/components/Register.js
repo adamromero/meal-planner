@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthState";
 
 import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
@@ -59,40 +61,44 @@ const Register = () => {
          </style>
          <WelcomePanel />
          <Container>
-            {error && <Alert variant="danger">{message}</Alert>}
-            <h1 className="fs-4">Register</h1>
-            <Form onSubmit={(e) => handleRegisterSubmission(e)}>
-               <Form.Control
-                  type="text"
-                  name="name"
-                  onChange={handleInputChange}
-                  placeholder="Name"
-               />
-               <br />
-               <Form.Control
-                  type="text"
-                  name="email"
-                  onChange={handleInputChange}
-                  placeholder="Email"
-               />
-               <br />
-               <Form.Control
-                  type="password"
-                  name="password"
-                  onChange={handleInputChange}
-                  placeholder="Password"
-               />
-               <br />
-               <Form.Control
-                  type="password"
-                  name="confirmPassword"
-                  onChange={handleInputChange}
-                  placeholder="Confirm Password"
-               />
-               <br />
-               <Button type="submit">Submit</Button>
-            </Form>
-            <Link to="/login">Click here to login</Link>
+            <Row>
+               <Col sm={12} md={6}>
+                  {error && <Alert variant="danger">{message}</Alert>}
+                  <h1 className="fs-4">Register</h1>
+                  <Form onSubmit={(e) => handleRegisterSubmission(e)}>
+                     <Form.Control
+                        type="text"
+                        name="name"
+                        onChange={handleInputChange}
+                        placeholder="Name"
+                     />
+                     <br />
+                     <Form.Control
+                        type="text"
+                        name="email"
+                        onChange={handleInputChange}
+                        placeholder="Email"
+                     />
+                     <br />
+                     <Form.Control
+                        type="password"
+                        name="password"
+                        onChange={handleInputChange}
+                        placeholder="Password"
+                     />
+                     <br />
+                     <Form.Control
+                        type="password"
+                        name="confirmPassword"
+                        onChange={handleInputChange}
+                        placeholder="Confirm Password"
+                     />
+                     <br />
+                     <Button type="submit">Submit</Button>
+                  </Form>
+                  <Link to="/login">Click here to login</Link>
+               </Col>
+            </Row>
          </Container>
       </>
    );
