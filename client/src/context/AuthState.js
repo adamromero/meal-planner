@@ -12,6 +12,7 @@ const initialState = {
    name: name ? name : null,
    email: email ? email : null,
    meals: [],
+   error: false,
    //token: null,
 };
 
@@ -21,19 +22,17 @@ export const AuthProvider = ({ children }) => {
    const [state, dispatch] = useReducer(AuthReducer, initialState);
 
    async function handleLogin(credentials) {
-      try {
-         await fetch("/api/users/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(credentials),
-         })
-            .then((res) => res.json())
-            .then((data) => {
-               console.log("data: ", data);
-               dispatch({ type: "LOGIN", payload: data });
-            });
-      } catch (error) {
-         console.error(error);
+      const response = await fetch("/api/users/login", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify(credentials),
+      });
+
+      if (response.status !== 200) {
+         dispatch({ type: "ERROR" });
+      } else {
+         const jsonData = await response.json();
+         dispatch({ type: "LOGIN", payload: jsonData });
       }
    }
 
@@ -42,18 +41,17 @@ export const AuthProvider = ({ children }) => {
    }
 
    async function handleRegister(credentials) {
-      try {
-         await fetch("/api/users", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(credentials),
-         })
-            .then((res) => res.json())
-            .then((data) => {
-               dispatch({ type: "REGISTER", payload: data });
-            });
-      } catch (error) {
-         console.error(error);
+      const response = await fetch("/api/users", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify(credentials),
+      });
+
+      if (response.status !== 200) {
+         dispatch({ type: "ERROR" });
+      } else {
+         const jsonData = await response.json();
+         dispatch({ type: "REGISTER", payload: jsonData });
       }
    }
 
@@ -65,6 +63,7 @@ export const AuthProvider = ({ children }) => {
             name: state.name,
             email: state.email,
             meals: state.meals,
+            error: state.error,
             handleRegister,
             handleLogin,
             handleLogout,

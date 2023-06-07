@@ -5,11 +5,12 @@ import { AuthContext } from "../context/AuthState";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
 
 import WelcomePanel from "./WelcomePanel";
 
 const Login = () => {
-   const { name, handleLogin } = useContext(AuthContext);
+   const { name, handleLogin, error } = useContext(AuthContext);
    const initialState = {
       email: "",
       password: "",
@@ -55,6 +56,7 @@ const Login = () => {
          </style>
          <WelcomePanel />
          <Container>
+            {error && <Alert variant="danger">Failed to login</Alert>}
             <h1 className="fs-4">Login</h1>
             <Form onSubmit={(e) => handleLoginSubmission(e)}>
                <Form.Control

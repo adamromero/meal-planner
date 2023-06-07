@@ -6,6 +6,7 @@ export default (state, action) => {
          localStorage.setItem("name", JSON.stringify(action.payload.name));
          localStorage.setItem("email", JSON.stringify(action.payload.email));
          //localStorage.setItem("token", JSON.stringify(action.payload.token));
+
          return {
             ...state,
             isAuthenticated: true,
@@ -21,7 +22,7 @@ export default (state, action) => {
          localStorage.removeItem("name");
          localStorage.removeItem("email");
          localStorage.removeItem("token");
-         console.log("logged out");
+
          return {
             ...state,
             isAuthenticated: false,
@@ -37,6 +38,14 @@ export default (state, action) => {
          localStorage.removeItem("name");
          localStorage.removeItem("email");
          localStorage.removeItem("token");
+
+         return {
+            ...state,
+            id: null,
+            name: null,
+            email: null,
+            error: true,
+         };
 
       default:
          return state;
