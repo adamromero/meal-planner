@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { Trash } from "react-bootstrap-icons";
 
-import { AuthContext } from "../context/AuthState";
+import { AuthContext } from "../context/auth/AuthState";
 
 const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
    const [savedMeals, setSavedMeals] = useState([]);
@@ -14,8 +14,9 @@ const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
 
    useEffect(() => {
       getSavedMeals();
-   }, [isUpdated, savedMeals]);
+   }, [isUpdated]);
 
+   //replace getsavedmeals with context
    const getSavedMeals = async () => {
       const response = await fetch(`/api/meals/${id}`);
       const data = await response.json();
@@ -24,6 +25,7 @@ const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
       setSavedMeals(savedMealsData);
    };
 
+   //replace removefromsaved meals with context
    const removeFromSavedMeals = async (id) => {
       await fetch(`/api/meals/${id}`, {
          method: "PUT",
@@ -39,6 +41,7 @@ const SavedMealsModal = ({ show, handleClose, isUpdated, setIsUpdated }) => {
       setSavedMeals(filteredMeals);
    };
 
+   //replace addsavedmealtoplanner with context
    const addSavedMealToPlanner = async (meal) => {
       const savedMeal = {
          ...meal,

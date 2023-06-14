@@ -4,7 +4,7 @@ import AuthReducer from "./AuthReducer";
 const id = JSON.parse(localStorage.getItem("id"));
 const name = JSON.parse(localStorage.getItem("name"));
 const email = JSON.parse(localStorage.getItem("email"));
-//const token = JSON.parse(localStorage.getItem("token"));
+const token = JSON.parse(localStorage.getItem("token"));
 
 const initialState = {
    //isAuthenticated: token,
@@ -13,7 +13,7 @@ const initialState = {
    email: email ? email : null,
    error: false,
    message: "",
-   //token: null,
+   token: token ? token : null,
 };
 
 export const AuthContext = createContext(initialState);
@@ -22,6 +22,8 @@ export const AuthProvider = ({ children }) => {
    const [state, dispatch] = useReducer(AuthReducer, initialState);
 
    async function handleLogin(credentials) {
+      console.log("token: ", token);
+
       const response = await fetch("/api/users/login", {
          method: "POST",
          headers: { "Content-Type": "application/json" },
@@ -65,6 +67,7 @@ export const AuthProvider = ({ children }) => {
             email: state.email,
             error: state.error,
             message: state.message,
+            token: state.token,
             handleRegister,
             handleLogin,
             handleLogout,

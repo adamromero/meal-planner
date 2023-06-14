@@ -32,7 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
          _id: user.id,
          name: user.name,
          email: user.email,
-         //token: generateToken(user._id)
+         token: generateToken(user._id),
       });
    } else {
       res.status(400).json({
@@ -58,7 +58,7 @@ const loginUser = asyncHandler(async (req, res) => {
          _id: user.id,
          name: user.name,
          email: user.email,
-         //token: generateToken(user._id)
+         token: generateToken(user._id),
       });
    } else {
       res.status(400).json({
@@ -66,6 +66,12 @@ const loginUser = asyncHandler(async (req, res) => {
       });
    }
 });
+
+const generateToken = (id) => {
+   return jwt.sign({ id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+   });
+};
 
 const updatePassword = asyncHandler(async (req, res) => {});
 

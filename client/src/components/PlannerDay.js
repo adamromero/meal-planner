@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PlannerModal from "./PlannerModal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import Spinner from "react-bootstrap/Spinner";
 import { Pencil, Trash, Heart, HeartFill } from "react-bootstrap-icons";
+
+import { AuthContext } from "../context/auth/AuthState";
 
 const PlannerDay = ({
    day,
@@ -26,12 +28,14 @@ const PlannerDay = ({
       handleShow();
    };
 
+   //replace handledelete with context
    const handleDelete = (id) => {
       fetch(`/api/meals/${id}`, { method: "DELETE" }).then(() => {
          setIsUpdated(!isUpdated);
       });
    };
 
+   //replace handlefavorte with context
    const handleFavorite = async (meal) => {
       const response = await fetch(`/api/meals/${meal._id}`, {
          method: "PUT",

@@ -1,11 +1,10 @@
 export default (state, action) => {
    switch (action.type) {
-      case "REGISTER":
       case "LOGIN":
          localStorage.setItem("id", JSON.stringify(action.payload._id));
          localStorage.setItem("name", JSON.stringify(action.payload.name));
          localStorage.setItem("email", JSON.stringify(action.payload.email));
-         //localStorage.setItem("token", JSON.stringify(action.payload.token));
+         localStorage.setItem("token", JSON.stringify(action.payload.token));
 
          return {
             ...state,
@@ -14,7 +13,7 @@ export default (state, action) => {
             name: action.payload.name,
             email: action.payload.email,
             message: action.payload.message,
-            //token: action.payload.token,
+            token: action.payload.token,
             error: null,
          };
       case "LOGOUT":
@@ -29,7 +28,7 @@ export default (state, action) => {
             id: null,
             name: null,
             email: null,
-            //token: null,
+            token: null,
             error: null,
          };
 
@@ -44,7 +43,8 @@ export default (state, action) => {
             id: null,
             name: null,
             email: null,
-            error: true,
+            token: null,
+            error: null,
             message: action.payload.message,
          };
 

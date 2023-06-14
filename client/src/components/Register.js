@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthState";
+import { AuthContext } from "../context/auth/AuthState";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { AuthContext } from "../context/AuthState";
+import { AuthContext } from "../context/auth/AuthState";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -15,6 +15,7 @@ import Planner from "./Planner.js";
 import PlannerModal from "./PlannerModal.js";
 import SavedMealsModal from "./SavedMealsModal.js";
 import ShoppingList from "./ShoppingList.js";
+import { MealContext } from "../context/meals/MealState";
 
 const MealPlanner = () => {
    const [meals, setMeals] = useState([]);
@@ -32,6 +33,8 @@ const MealPlanner = () => {
 
    const { id, name, handleLogout } = useContext(AuthContext);
 
+   const { getMealsByUser } = useContext(MealContext);
+
    const navigate = useNavigate();
 
    useEffect(() => {
@@ -39,14 +42,12 @@ const MealPlanner = () => {
          navigate("/login");
       }
 
-      getMealsByUser();
+      displayMealsByUser();
    }, [name, isUpdated]);
 
-   const getMealsByUser = async () => {
+   const displayMealsByUser = async () => {
       if (id) {
-         const response = await fetch(`/api/meals/${id}`);
-         const data = await response.json();
-
+         const data = await getMealsByUser(id);
          setMeals(data);
          combineIngredientsIntoList(data);
          setIsLoading(false);

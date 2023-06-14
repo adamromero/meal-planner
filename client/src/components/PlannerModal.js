@@ -3,7 +3,8 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-import { AuthContext } from "../context/AuthState";
+import { AuthContext } from "../context/auth/AuthState";
+import { MealContext } from "../context/meals/MealState";
 
 const PlannerModal = ({
    show,
@@ -15,6 +16,7 @@ const PlannerModal = ({
 }) => {
    const [currentMeal, setCurrentMeal] = useState([]);
    const { id } = useContext(AuthContext);
+   const { addMeal, editMeal } = useContext(MealContext);
 
    useEffect(() => {
       if (meal) {
@@ -22,7 +24,8 @@ const PlannerModal = ({
       }
    }, [meal]);
 
-   const addMeal = async (e) => {
+   //replace addmeal with context
+   const handleAddMeal = async (e) => {
       const newMeal = {
          _id: "",
          name: e.target.name.value,
@@ -32,30 +35,13 @@ const PlannerModal = ({
          createdBy: id,
       };
 
-      await fetch(`/api/meals/${id}`, {
-         method: "POST",
-         headers: {
-            "Content-Type": "application/json",
-         },
-         body: JSON.stringify(newMeal),
-      })
-         .then((res) => res.json())
-         .catch((err) => console.error(err));
-
+      addMeal(newMeal);
       setIsUpdated(!isUpdated);
    };
 
-   const editMeal = async () => {
-      await fetch(`/api/meals/${currentMeal._id}`, {
-         method: "PUT",
-         headers: {
-            "Content-Type": "application/json",
-         },
-         body: JSON.stringify(currentMeal),
-      })
-         .then((res) => res.json())
-         .catch((err) => console.error(err));
-
+   //replace editmeal with context
+   const handleEditMeal = async () => {
+      editMeal(currentMeal);
       setIsUpdated(!isUpdated);
    };
 
@@ -63,9 +49,9 @@ const PlannerModal = ({
       e.preventDefault();
 
       if (isNewMeal) {
-         addMeal(e);
+         handleAddMeal(e);
       } else {
-         editMeal();
+         handleEditMeal();
       }
 
       onHide();
